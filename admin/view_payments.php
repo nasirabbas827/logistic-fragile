@@ -8,15 +8,17 @@ if (!isset($_SESSION["usertype"]) || $_SESSION["usertype"] !== "admin") {
     exit;
 }
 
-// Fetch all payments and calculate the total amount
-$sql = "SELECT *, SUM(amount) AS total_amount FROM Payments";
+// Fetch all payments to display in the table
+$sql = "SELECT * FROM Payments";
 $result = $conn->query($sql);
+
+// Calculate the total payment amount
+$sql_total = "SELECT SUM(amount) AS total_amount FROM Payments";
+$result_total = $conn->query($sql_total);
 $total_amount = 0;
-if ($result->num_rows > 0) {
-    $total_row = $result->fetch_assoc();
+if ($result_total->num_rows > 0) {
+    $total_row = $result_total->fetch_assoc();
     $total_amount = $total_row['total_amount'];
-    // Fetch all rows again to display in the table
-    $result->data_seek(0);
 }
 ?>
 
